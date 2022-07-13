@@ -1,0 +1,15 @@
+.display {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 100px;
+    margin-top: 25px;
+    width: 450px;
+    height: 200px;
+    background: #22bfde;
+    border-radius: 10px;
+}
+.red{
+    color: red;
+}

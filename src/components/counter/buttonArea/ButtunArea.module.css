@@ -1,0 +1,11 @@
+.buttonArea {
+    margin-top: 25px;
+    width: 450px;
+    height: 125px;
+    border: 3px solid #22bfde;
+    border-radius: 10px;
+    margin-bottom: 25px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}

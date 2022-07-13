@@ -1,0 +1,15 @@
+.button {
+    min-width: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60px;
+    background: #22bfde;
+    border-radius: 10px;
+    font-size: 50px;
+    font-weight: bold;
+    text-align: center;
+    margin: 25px;
+    padding-left: 40px;
+    padding-right: 40px;
+}
