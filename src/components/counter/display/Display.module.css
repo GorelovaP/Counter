@@ -7,9 +7,11 @@
     margin-top: 25px;
     width: 450px;
     height: 200px;
-    background: #22bfde;
+    color: #22bfde;
+    border: 3px solid #22bfde;
     border-radius: 10px;
 }
+
 .red{
     color: red;
 }

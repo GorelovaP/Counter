@@ -1,21 +1,15 @@
-import React, {useState} from 'react';
+import React from 'react';
 import './App.css';
-import {Counter} from "./components/counter/Counter";
+import {SuperCounter} from "./components/counter2/SuperCounter";
 
 
 function App() {
 
-    let [count, setCount] = useState<number>(0)
-    const Inc = () => {
-        setCount(count+1);
-    }
-    const Reset = () => {
-        setCount(0)
-    }
+
 
     return (
         <div className="App">
-            <Counter number={count} Reset={Reset} Inc={Inc}/>
+            <SuperCounter/>
         </div>
     );
 }
