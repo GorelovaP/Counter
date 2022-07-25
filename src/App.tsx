@@ -5,8 +5,6 @@ import {SuperCounter} from "./components/counter2/SuperCounter";
 
 function App() {
 
-
-
     return (
         <div className="App">
             <SuperCounter/>

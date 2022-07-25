@@ -11,7 +11,9 @@
     border: 3px solid #22bfde;
     border-radius: 10px;
 }
-
+.large{
+    font-size: xx-large;
+}
 .red{
     color: red;
 }

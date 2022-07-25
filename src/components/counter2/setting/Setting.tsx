@@ -2,27 +2,36 @@ import s from "./Setting.module.css";
 import c from "../../counter/Counter.module.css";
 
 
-import React from "react";
+import React, {Dispatch, SetStateAction} from "react";
 import {UniversalButton} from "../../universalButton/UniversalButton";
 import {UniversalInputNumber} from "../../universalInputNumber/UniversalInputNumber";
 
-const Set =()=>{
-
-}
 
 type SettingPropsType = {
-
+    min: number;
+    max: number;
+    setMin: Dispatch<SetStateAction<number>>;
+    setMax: Dispatch<SetStateAction<number>>;
+    doSettings: () => void;
+    toggle: boolean;
+    setToggle: Dispatch<SetStateAction<boolean>>;
 }
 
 export const Setting = (props: SettingPropsType) => {
+
+    const changeToggle = () => {
+        props.setToggle(false)
+    }
     return (
         <div className={c.counter}>
             <div className={s.display}>
-                <UniversalInputNumber text={"Max значение:"}/>
-                <UniversalInputNumber text={"Min значение:"}/>
+                <UniversalInputNumber additionalAction={changeToggle} setValue={props.setMax} value={props.max}
+                                      text={"Max значение:"}/>
+                <UniversalInputNumber additionalAction={changeToggle} setValue={props.setMin} value={props.min}
+                                      text={"Min значение:"}/>
             </div>
             <div className={s.buttonArea}>
-                <UniversalButton callback={Set} name={"Set"} boolean={true}/>
+                <UniversalButton callback={props.doSettings} name={"Set"} boolean={props.toggle}/>
             </div>
         </div>
     )
