@@ -8,7 +8,10 @@ export const SuperCounter = () => {
     let [min, setMin] = useState<number>(0)
     let [max, setMax] = useState<number>(5)
     let [toggle, setToggle] = useState<boolean>(true)
+    let [valueError, setValueError] = useState<boolean>(true)
+    let [negative, setNegative] = useState<boolean>(false)
 
+    //localStorage.clear()
 
     useEffect(() => {
         let StringValueMin = localStorage.getItem("Min");
@@ -25,6 +28,7 @@ export const SuperCounter = () => {
             let NewValueMax = JSON.parse(StringValueMax)
             setMax(NewValueMax)
         }
+        console.log(min)
     }, [])
 
 
@@ -33,7 +37,6 @@ export const SuperCounter = () => {
         localStorage.setItem("Max", JSON.stringify(max));
     })
 
-
     const Inc = () => {
         setCount(count + 1);
     }
@@ -41,22 +44,26 @@ export const SuperCounter = () => {
         setCount(min)
     }
 
-    const doSettings = () => { //применить настройки по клику на кнопку
+    const doSettings = (CurrentMin: number, CurrentMax: number) => { //применить настройки по клику на кнопку
         if (!toggle) {
             setToggle(true)
-            setCount(min)
+            setCount(CurrentMin)
+            setMax(CurrentMax)
+            setMin(CurrentMin)
         }
-
     }
+
     return (
+
         <div className={s.superCounter}>
-            <Setting setMin={setMin}
-                     setMax={setMax}
-                     min={min}
+            <Setting min={min}
                      max={max}
                      doSettings={doSettings}
                      toggle={toggle}
                      setToggle={setToggle}
+                     valueError={valueError}
+                     setValueError={setValueError}
+                     setNegative={setNegative}
             />
             <Counter
                 choice={toggle}
@@ -65,6 +72,8 @@ export const SuperCounter = () => {
                 Inc={Inc}
                 min={min}
                 max={max}
+                valueError={valueError}
+                negative={negative}
             />
         </div>
     )

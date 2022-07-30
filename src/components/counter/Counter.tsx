@@ -10,14 +10,19 @@ type CounterPropsType = {
     choice: boolean;
     min: number;
     max: number;
+    valueError: boolean;
+    negative: boolean;
 }
 export const Counter = (props: CounterPropsType) => {
     return (
         <div className={s.counter}>
             <Display choice={props.choice}
-                     text={"Enter values and press 'set'"}
+                     text={props.valueError && !props.negative ? "Enter values and press 'set'" : "Incorrect value!"}
                      number={props.number}
-                     max={props.max}/>
+                     max={props.max}
+                     valueError={props.valueError}
+                     negative={props.negative}
+            />
 
             <ButtonArea min={props.min}
                         max={props.max}

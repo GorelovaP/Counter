@@ -1,16 +1,39 @@
-import React from "react";
+import React, {Dispatch, SetStateAction, useState} from "react";
 import s from "./UniversalInputNumber.module.css"
+import {ComponentId} from "../counter2/setting/Setting";
 
 type UniversalInputNumberPropsType = {
+    id: ComponentId;
     text: string;
     value: number;
-    setValue: (n: number) => void;
+    error: boolean;
+    setCurrentValue: (id: ComponentId, value: number) => void
     additionalAction?: () => void;
+    setDisabledForBtn: Dispatch<SetStateAction<boolean>>;
 }
 export const UniversalInputNumber = (props: UniversalInputNumberPropsType) => {
+    let [value, setValue] = useState<number>(props.value)
+    let [error, setError] = useState<boolean>(false)
+
     const doOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        props.setValue(JSON.parse(e.currentTarget.value))
+        console.log(e.currentTarget.value)
+        let currentValueInt = JSON.parse(e.currentTarget.value)
+        console.log(currentValueInt)
+        props.setCurrentValue(props.id, currentValueInt)
+        setValue(currentValueInt)
+
+        if (currentValueInt < 0) {
+            setError(true)
+
+        }
+        if (currentValueInt >= 0) {
+            setError(false)
+            props.setDisabledForBtn(false)
+        }
+
     }
+
+    let ClassNameForInput = `${error || !props.error ? s.red : " "} ${s.input}`
     return (
         <div className={s.universalInputArea}>
             <label>{props.text}</label> <input onChange={(event) => {
@@ -20,8 +43,8 @@ export const UniversalInputNumber = (props: UniversalInputNumberPropsType) => {
             }
 
         }}
-                                               value={props.value}
-                                               className={s.input} type={"number"}/>
+                                               value={value}
+                                               className={ClassNameForInput} type={"number"}/>
         </div>
     )
 }
