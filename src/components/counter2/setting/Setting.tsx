@@ -24,6 +24,11 @@ export const Setting = (props: SettingPropsType) => {
     let [currentMax, setCurrentMax] = useState<number>(props.max)
 
 
+    console.log("мин из настроек" + props.min)
+    console.log("current min" + currentMin)
+    console.log("мин из настроек" + props.max)
+    console.log("current max" + currentMax)
+
     const SetCurrentValueMaxOrMin = (id: ComponentId, value: number) => {
         id === "Min" ? setCurrentMin(value) : setCurrentMax(value)
         props.setToggle(false)
