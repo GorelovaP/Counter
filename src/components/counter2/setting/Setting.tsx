@@ -2,7 +2,7 @@ import s from "./Setting.module.css";
 import c from "../../counter/Counter.module.css";
 
 
-import React, {Dispatch, SetStateAction, useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {UniversalButton} from "../../universalButton/UniversalButton";
 import {UniversalInputNumber} from "../../universalInputNumber/UniversalInputNumber";
 
@@ -12,10 +12,10 @@ type SettingPropsType = {
     max: number;
     doSettings: (min: number, max: number) => void;
     toggle: boolean;
-    setToggle: Dispatch<SetStateAction<boolean>>;
+    changeToggle: (toggle: boolean) => void;
     valueError: boolean;
-    setValueError: Dispatch<SetStateAction<boolean>>;
-    setNegative: Dispatch<SetStateAction<boolean>>;
+    setValueError: (error: boolean) => void;
+    setNegative: (negative: boolean) => void;
 }
 export type ComponentId = "Min" | "Max";
 
@@ -24,14 +24,9 @@ export const Setting = (props: SettingPropsType) => {
     let [currentMax, setCurrentMax] = useState<number>(props.max)
 
 
-    console.log("мин из настроек" + props.min)
-    console.log("current min" + currentMin)
-    console.log("мин из настроек" + props.max)
-    console.log("current max" + currentMax)
-
     const SetCurrentValueMaxOrMin = (id: ComponentId, value: number) => {
         id === "Min" ? setCurrentMin(value) : setCurrentMax(value)
-        props.setToggle(false)
+        props.changeToggle(false)
     }
 
     useEffect(() => {
@@ -48,14 +43,14 @@ export const Setting = (props: SettingPropsType) => {
                                       value={currentMax}
                                       error={props.valueError}
                                       text={"Max значение:"}
-                                      setDisabledForBtn={props.setToggle}/>
+                                      setDisabledForBtn={props.changeToggle}/>
 
                 <UniversalInputNumber id="Min"
                                       setCurrentValue={SetCurrentValueMaxOrMin}
                                       value={currentMin}
                                       error={props.valueError}
                                       text={"Min значение:"}
-                                      setDisabledForBtn={props.setToggle}/>
+                                      setDisabledForBtn={props.changeToggle}/>
             </div>
             <div className={s.buttonArea}>
                 <UniversalButton callback={() => props.doSettings(currentMin, currentMax)} name={"Set"}

@@ -14,7 +14,7 @@ export const Display = (props: DisplayPropsType) => {
      ${props.number === props.max ? s.red : ""}
      ${props.valueError ? "" : s.red}
      ${props.negative ? s.red : ""}`
-    console.log(props.number)
+
     return (
         <div className={display}>
             {props.choice ? props.number : props.text}

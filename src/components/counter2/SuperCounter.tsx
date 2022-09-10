@@ -1,95 +1,70 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 import {Counter} from "../counter/Counter";
 import {Setting} from "./setting/Setting";
 import s from "./SuperCounter.module.css"
+import {useDispatch, useSelector} from "react-redux";
+import {AppRootStateType} from "../../state/store";
+import {
+    changeToggleAC,
+    CounterStateType,
+    plusCounterAC,
+    resetCounterAC, setErrorValueAC,
+    setMaxBorderAC,
+    setMinBorderAC, setNegativeAC
+} from "../../state/counter-reducer";
 
 export const SuperCounter = () => {
-    const defaultMin = () => {
-        let StringValueMin = localStorage.getItem("Min");
-        if (StringValueMin) {
-            return JSON.parse(StringValueMin)
-        }
-        return 0
-    }
 
-    const defaultMax = () => {
-        let StringValueMin = localStorage.getItem("Max");
-        if (StringValueMin) {
-            return JSON.parse(StringValueMin)
-        }
-        return 5
-    }
+    let dispatch = useDispatch()
+    let dataCounter = useSelector<AppRootStateType, CounterStateType>(state => state.counter)
 
-    let [count, setCount] = useState<number>(0)
-    let [min, setMin] = useState<number>(defaultMin)
-    let [max, setMax] = useState<number>(defaultMax)
-    let [toggle, setToggle] = useState<boolean>(true)
-    let [valueError, setValueError] = useState<boolean>(true)
-    let [negative, setNegative] = useState<boolean>(false)
-
-    //localStorage.clear()
-    console.log('state ,', {min, max})
-    useEffect(() => {
-        let StringValueMin = localStorage.getItem("Min");
-        let StringValueMax = localStorage.getItem("Max");
-
-        // console.log("StringValueMax" + StringValueMax)
-        console.log('values ,', {StringValueMin, StringValueMax})
-        if (StringValueMin) {
-            let NewValueMin = JSON.parse(StringValueMin)
-            setMin(NewValueMin)
-            setCount(NewValueMin)
-        }
-
-        if (StringValueMax) {
-            let NewValueMax = JSON.parse(StringValueMax)
-            setMax(NewValueMax)
-        }
-
-    }, [])
-
-
-    useEffect(() => {
-        localStorage.setItem("Min", JSON.stringify(min));
-        localStorage.setItem("Max", JSON.stringify(max));
-    })
+    let [currenValue, MinBorder, MaxBorder, toggle, error, negative] = [dataCounter.currenValue, dataCounter.minBorder, dataCounter.maxBorder, dataCounter.toggle, dataCounter.error, dataCounter.negative]
 
     const Inc = () => {
-        setCount(count + 1);
+        dispatch(plusCounterAC())
     }
     const Reset = () => {
-        setCount(min)
+        dispatch(resetCounterAC(MinBorder))
+    }
+    const changeToggle = (value: boolean) => {
+        dispatch(changeToggleAC(value))
+    }
+    const setError = (error: boolean) => {
+        dispatch(setErrorValueAC(error))
+    }
+    const setNegative = (negative: boolean) => {
+        dispatch(setNegativeAC(negative))
     }
 
     const doSettings = (CurrentMin: number, CurrentMax: number) => { //применить настройки по клику на кнопку
         if (!toggle) {
-            setToggle(true)
-            setCount(CurrentMin)
-            setMax(CurrentMax)
-            setMin(CurrentMin)
+            changeToggle(true)
+            dispatch(resetCounterAC(CurrentMin))
+            dispatch(setMaxBorderAC(CurrentMax))
+            dispatch(setMinBorderAC(CurrentMin))
         }
     }
 
     return (
 
         <div className={s.superCounter}>
-            <Setting min={min}
-                     max={max}
+            <Setting min={MinBorder}
+                     max={MaxBorder}
                      doSettings={doSettings}
                      toggle={toggle}
-                     setToggle={setToggle}
-                     valueError={valueError}
-                     setValueError={setValueError}
+                     changeToggle={changeToggle}
+                     valueError={error}
+                     setValueError={setError}
                      setNegative={setNegative}
             />
             <Counter
+                number={currenValue}
+                min={MinBorder}
+                max={MaxBorder}
                 choice={toggle}
-                number={count}
+                valueError={error}
                 Reset={Reset}
                 Inc={Inc}
-                min={min}
-                max={max}
-                valueError={valueError}
                 negative={negative}
             />
         </div>
