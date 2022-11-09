@@ -1,3 +1,5 @@
+import {AppThunkType} from "./store";
+
 const PLUS_COUNTER = "PLUS-COUNTER"
 const RESET_COUNTER = "RESET-COUNTER"
 const SET_CURRENT_VALUE_COUNTER = "SET_CURRENT_VALUE_COUNTER"
@@ -7,7 +9,7 @@ const CHANGE_TOGGLE = "CHANGE-TOGGLE"
 const SET_ERROR = "SET-ERROR"
 const IS_NEGATIVE = "IS-NEGATIVE"
 
-type ActionsType = ReturnType<typeof plusCounterAC>
+export type ActionsType = ReturnType<typeof plusCounterAC>
     | ReturnType<typeof resetCounterAC>
     | ReturnType<typeof setCurrentValueCounterAC>
     | ReturnType<typeof setMinBorderAC>
@@ -16,14 +18,7 @@ type ActionsType = ReturnType<typeof plusCounterAC>
     | ReturnType<typeof setErrorValueAC>
     | ReturnType<typeof setNegativeAC>
 
-export type CounterStateType = {
-    currenValue: number
-    minBorder: number,
-    maxBorder: number,
-    toggle: boolean,
-    error: boolean
-    negative: boolean
-}
+export type CounterStateType = typeof initialState
 const initialState = {
     currenValue: 0,
     minBorder: 0,
@@ -31,8 +26,8 @@ const initialState = {
     toggle: true,
     error: true,
     negative: false
-
 }
+
 export const counterReducer = (state: CounterStateType = initialState, action: ActionsType): CounterStateType => {
     switch (action.type) {
         case PLUS_COUNTER: {
@@ -84,4 +79,26 @@ export const setErrorValueAC = (error: boolean) => {
 }
 export const setNegativeAC = (negative: boolean) => {
     return {type: IS_NEGATIVE, negative: negative} as const
+}
+
+export const setToLocalStorageTC = (CurrentMin: number, CurrentMax: number): AppThunkType => dispatch => {
+    localStorage.setItem("Min", JSON.stringify(CurrentMin));
+    localStorage.setItem("Max", JSON.stringify(CurrentMax));
+}
+export const getFromLocalStorageTC = (): AppThunkType => (dispatch) => {
+    let StringValueMin = localStorage.getItem("Min");
+    let StringValueMax = localStorage.getItem("Max");
+
+    console.log('values ,', {StringValueMin, StringValueMax})
+
+    if (StringValueMin) {
+        let NewValueMin = JSON.parse(StringValueMin)
+        dispatch(setMinBorderAC(NewValueMin))
+        dispatch(resetCounterAC(NewValueMin))
+    }
+
+    if (StringValueMax) {
+        let NewValueMax = JSON.parse(StringValueMax)
+        dispatch(setMaxBorderAC(NewValueMax))
+    }
 }

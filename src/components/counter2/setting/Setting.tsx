@@ -5,11 +5,11 @@ import c from "../../counter/Counter.module.css";
 import React, {useEffect, useState} from "react";
 import {UniversalButton} from "../../universalButton/UniversalButton";
 import {UniversalInputNumber} from "../../universalInputNumber/UniversalInputNumber";
+import {useSelector} from "react-redux";
+import {AppRootStateType} from "../../../state/store";
 
 
 type SettingPropsType = {
-    min: number;
-    max: number;
     doSettings: (min: number, max: number) => void;
     toggle: boolean;
     changeToggle: (toggle: boolean) => void;
@@ -20,8 +20,20 @@ type SettingPropsType = {
 export type ComponentId = "Min" | "Max";
 
 export const Setting = (props: SettingPropsType) => {
-    let [currentMin, setCurrentMin] = useState<number>(props.min)
-    let [currentMax, setCurrentMax] = useState<number>(props.max)
+
+    const minBorder = useSelector<AppRootStateType, number>(state => state.counter.minBorder)
+    const maxBorder = useSelector<AppRootStateType, number>(state => state.counter.maxBorder)
+
+    useEffect(() => {
+        setCurrentMin(minBorder)
+    }, [minBorder])
+
+    useEffect(() => {
+        setCurrentMax(maxBorder)
+    }, [maxBorder])
+
+    let [currentMin, setCurrentMin] = useState<number>(minBorder)
+    let [currentMax, setCurrentMax] = useState<number>(maxBorder)
 
 
     const SetCurrentValueMaxOrMin = (id: ComponentId, value: number) => {

@@ -1,23 +1,26 @@
 import s from "./Display.module.css"
+import {useSelector} from "react-redux";
+import {AppRootStateType} from "../../../state/store";
 
 type DisplayPropsType = {
-    number: number;
     text: string;
     choice: boolean;
-    max: number;
     valueError: boolean;
     negative: boolean;
 }
 export const Display = (props: DisplayPropsType) => {
+    const maxBorder = useSelector<AppRootStateType, number>(state => state.counter.maxBorder)
+    const currentValue = useSelector<AppRootStateType, number>(state => state.counter.currenValue)
+
     let display = `${s.display}
      ${!props.choice ? s.large : ""} 
-     ${props.number === props.max ? s.red : ""}
+     ${currentValue === maxBorder ? s.red : ""}
      ${props.valueError ? "" : s.red}
      ${props.negative ? s.red : ""}`
 
     return (
         <div className={display}>
-            {props.choice ? props.number : props.text}
+            {props.choice ? currentValue : props.text}
         </div>
     )
 }

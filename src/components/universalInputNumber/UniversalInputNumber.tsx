@@ -1,4 +1,4 @@
-import React, { useState} from "react";
+import React, {useEffect, useState} from "react";
 import s from "./UniversalInputNumber.module.css"
 import {ComponentId} from "../counter2/setting/Setting";
 
@@ -11,6 +11,10 @@ type UniversalInputNumberPropsType = {
     setDisabledForBtn: (toggle: boolean) => void;
 }
 export const UniversalInputNumber = (props: UniversalInputNumberPropsType) => {
+
+    useEffect(() => {
+        setValue(props.value)
+    }, [props.value])
 
     let [value, setValue] = useState<number>(props.value)
     let [error, setError] = useState<boolean>(false)

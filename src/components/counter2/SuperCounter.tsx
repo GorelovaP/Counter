@@ -3,28 +3,31 @@ import {Counter} from "../counter/Counter";
 import {Setting} from "./setting/Setting";
 import s from "./SuperCounter.module.css"
 import {useDispatch, useSelector} from "react-redux";
-import {AppRootStateType} from "../../state/store";
+import {AppDispatch, AppRootStateType} from "../../state/store";
 import {
     changeToggleAC,
     CounterStateType,
     plusCounterAC,
     resetCounterAC, setErrorValueAC,
     setMaxBorderAC,
-    setMinBorderAC, setNegativeAC
+    setMinBorderAC, setNegativeAC, setToLocalStorageTC
 } from "../../state/counter-reducer";
 
 export const SuperCounter = () => {
 
-    let dispatch = useDispatch()
-    let dataCounter = useSelector<AppRootStateType, CounterStateType>(state => state.counter)
-
-    let [currenValue, MinBorder, MaxBorder, toggle, error, negative] = [dataCounter.currenValue, dataCounter.minBorder, dataCounter.maxBorder, dataCounter.toggle, dataCounter.error, dataCounter.negative]
+    let dispatch = useDispatch<AppDispatch>()
+    const {
+        minBorder,
+        toggle,
+        error,
+        negative
+    } = useSelector<AppRootStateType, CounterStateType>(state => state.counter)
 
     const Inc = () => {
         dispatch(plusCounterAC())
     }
     const Reset = () => {
-        dispatch(resetCounterAC(MinBorder))
+        dispatch(resetCounterAC(minBorder))
     }
     const changeToggle = (value: boolean) => {
         dispatch(changeToggleAC(value))
@@ -39,6 +42,7 @@ export const SuperCounter = () => {
     const doSettings = (CurrentMin: number, CurrentMax: number) => { //применить настройки по клику на кнопку
         if (!toggle) {
             changeToggle(true)
+            dispatch(setToLocalStorageTC(CurrentMin, CurrentMax))
             dispatch(resetCounterAC(CurrentMin))
             dispatch(setMaxBorderAC(CurrentMax))
             dispatch(setMinBorderAC(CurrentMin))
@@ -48,9 +52,7 @@ export const SuperCounter = () => {
     return (
 
         <div className={s.superCounter}>
-            <Setting min={MinBorder}
-                     max={MaxBorder}
-                     doSettings={doSettings}
+            <Setting doSettings={doSettings}
                      toggle={toggle}
                      changeToggle={changeToggle}
                      valueError={error}
@@ -58,9 +60,6 @@ export const SuperCounter = () => {
                      setNegative={setNegative}
             />
             <Counter
-                number={currenValue}
-                min={MinBorder}
-                max={MaxBorder}
                 choice={toggle}
                 valueError={error}
                 Reset={Reset}
