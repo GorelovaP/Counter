@@ -14,6 +14,8 @@ Counter app is a universal tool for counting anything you want. You can also set
 
 In the application, you can't count in a negative value. 
 
+DEMO: https://gorelovap.github.io/Counter
+
 <hr/>
 
 ## Built With:
